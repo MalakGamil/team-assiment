@@ -222,3 +222,187 @@ void convertImageToGray()
         }
     }
 }
+void flipImage()
+{
+    // 3 nested loops to loop in each pixel
+    for (int i = 0; i < SIZE; ++i) // loop for rows
+    {
+        for (int j = 0, a = SIZE - 1; j < a; j++, a--) // loop for columns
+        {
+            for (int k = 0; k < RGB; ++k) // loop for colour
+            {
+                // swap each pixel to get the flip image
+                swap(image[j][i][k], image[a][i][k]);
+            }
+        }
+    }
+}
+void detectImageEdges()
+{
+    // call function convertImageToGray
+    convertImageToGray();
+    // 3 nested loops to loop in each pixel
+    int diff = 30;
+    for (int i = 0; i < SIZE; ++i) // loop for rows
+    {
+        for (int j = 0; j < SIZE; ++j) // loop for columns
+        {
+            for (int k = 0; k < RGB; ++k) // loop for colour
+            {
+                // comparing each pixel with the pixels arround it
+                // if result of subtract two adjecant pixels greater than or equal to 35 (convert the first pixel to black)
+                // else (convert the first pixel to white)
+                if (image[i][j][k] - image[i + 1][j][k] >= diff || image[i][j][k] - image[i + 1][j][k] <= (diff * (-1)) ||
+                     image[i][j][k] - image[i][j + 1][k] >= diff ||
+                      image[i][j][k] - image[i][j + 1][k] <= (diff * (-1)))
+                {
+                    image[i][j][k] = 0;
+                }
+                else
+                {
+                    image[i][j][k] = 255;
+                }
+            }
+        }
+    }
+}
+// definition of function for mirror the half of image (left to right)
+void mirrorLeftRight()
+{
+    // 3 nested loops to loop in each pixel
+    for (int i = 0; i < SIZE; i++) // loop for rows
+    {
+        for (int j = 0; j < SIZE / 2; j++)// we loop in columns to (SIZE / 2) because to mirror half of image
+        {
+            for (int k = 0; k < RGB; ++k) // loop for colour
+            {
+                // mirror each pixel
+                // ex: the pixel [0][0][0] will mirror in pixel [0][255][0]
+                // the pixel [0][1][0] will mirror in pixel [0][254][0] and so on
+                image[i][SIZE - 1 - j][k] = image[i][j][k];
+            }
+        }
+    }
+}
+// definition of function for mirror the half of image (right to left)
+void mirrorRightLeft()
+{
+    // 3 nested loops to loop in each pixel
+    for (int i = 0; i < SIZE; i++) // loop for rows
+    {
+        for (int j = 256; j > SIZE / 2; --j)// we loop in columns to (SIZE / 2) because to mirror half of image
+            // we inverse the count to start from the end
+        {
+            for (int k = 0; k < RGB; ++k)// loop for colour
+            {
+                // mirror each pixel
+                // ex: the pixel [0][0][0] will mirror in pixel [0][255][0]
+                // the pixel [0][1][0] will mirror in pixel [0][254][0] and so on
+                image[i][SIZE - 1 - j][k] = image[i][j][k];
+            }
+        }
+    }
+}
+// definition of function for mirror the half of image (up to down)
+void mirrorUpDown()
+{
+    // 3 nested loops to loop in each pixel
+    for (int i = 0; i < SIZE / 2; ++i)// we loop in rows to (SIZE / 2) because to mirror half of image
+    {
+        for (int j = 0; j < SIZE; ++j) // loop for columns
+        {
+            for (int k = 0; k < RGB; ++k) // loop for colour
+            {
+                // mirror each pixel
+                // ex: the pixel [0][0][0] will mirror in pixel [255][0][0]
+                // the pixel [1][0][0] will mirror in pixel [254][0][0] and so on
+                image[SIZE - 1 - i][j][k] = image[i][j][k];
+            }
+        }
+    }
+}
+// definition of function for mirror the half of image (down to up)
+void mirrorDownUp()
+{
+    // 3 nested loops for loop to each pixel
+    for (int i = 255; i > SIZE / 2; --i)// we loop in rows to (SIZE / 2) because to mirror half of image
+        // we inverse the count to start from the end
+    {
+        for (int j = 0; j < SIZE; ++j) // loop for columns
+        {
+            for (int k = 0; k < RGB; ++k) // loop for colour
+            {
+                // mirror each pixel
+                // ex: the pixel [0][0][0] will mirror in pixel [255][0][0]
+                // the pixel [1][0][0] will mirror in pixel [254][0][0] and so on
+                image[SIZE - 1 - i][j][k] = image[i][j][k];
+            }
+        }
+    }
+}
+// definition of function for mirror half an image
+void mirrorImage()
+{
+    char mirrorSide;
+    // give the user choice of mirror side
+    cout << "Mirror (l)eft, (r)ight, (u)pper, (d)own side? ";
+    cin >> mirrorSide;
+    // if mirrorSide == l --> call mirrorLeftRight
+    // else if mirrorSide == r --> call mirrorRightLeft
+    // else if mirrorSide == u --> call mirrorUpDown
+    // else if mirrorSide == d --> call mirrorDownUp
+    // else invalid side
+    if (mirrorSide == 'l')
+    {
+        // call mirrorLeftRight function
+        mirrorLeftRight();
+    } else if (mirrorSide == 'r')
+    {
+        // call mirrorRightLeft function
+        mirrorRightLeft();
+    } else if (mirrorSide == 'u')
+    {
+        // call mirrorUpDown function
+        mirrorUpDown();
+    } else if (mirrorSide == 'd')
+    {
+        // call mirrorDownUp function
+        mirrorDownUp();
+    } else
+    {
+        cout << "invalid side" << endl;
+    }
+}
+const int RED = 0;
+const int GREEN = 1;
+const int BLUE = 2;
+
+void cropImage()
+{
+    int x, y, l, w;
+
+    // Get cropping parameters from the user
+    cout << "Enter x position: ";
+    cin >> x;
+    cout << "Enter y position: ";
+    cin >> y;
+    cout << "Enter length: ";
+    cin >> l;
+    cout << "Enter width: ";
+    cin >> w;
+
+    // Crop the image
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            if (i < x || i >= (x + l) || j < y || j >= (y + w))
+            {
+                // Set pixels outside the cropped region to white (255) for each color channel
+                image[i][j][RED] = 255;
+                image[i][j][GREEN] = 255;
+                image[i][j][BLUE] = 255;
+            }
+        }
+    }
+}
