@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\dell\Downloads\CS213-2023-2024-Assignment1-V1.0\CS213-2023-2024-Assignment1-V1.0\demo2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dell\Downloads\CS213-2023-2024-Assignment1-V1.0\CS213-2023-2024-Assignment1-V1.0\PhotoEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\dell\Downloads\CS213-2023-2024-Assignment1-V1.0\CS213-2023-2024-Assignment1-V1.0\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{EC0A352D-B1E8-3A3B-BEE1-5D7A0CAF2078}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
