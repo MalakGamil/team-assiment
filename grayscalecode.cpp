@@ -157,3 +157,122 @@ void saveImage()
     strcat(filename, ".bmp");
     writeGSBMP(filename, image);
 }
+void blackAndWhite()
+{
+    loadImage();
+    int sum = 0;
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            sum += image[i][j];
+        }
+    }
+    int average = sum / (SIZE * SIZE);
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            if (image[i][j] > average)
+            {
+                image[i][j] = 255;
+            }
+            else
+            {
+                image[i][j] = 0;
+            }
+        }
+    }
+    
+}
+// this function flips the image  horizontally or vertically. It prompts the user to choose a flip direction (horizontal or vertical) and flips the image accordingly by swapping the pixel values of corresponding pixels on either side of the image
+void flipImage()
+{
+    loadImage();
+    int choice;
+    cout << "Choose a flip direction:" << endl;
+    cout << "1. Horizontal" << endl;
+    cout << "2. Vertical" << endl;
+    cin >> choice;
+    if (choice == 1)
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = 0; j < SIZE / 2; j++)
+            {
+                int temp = image[i][j];
+                image[i][j] = image[i][SIZE - j - 1];
+                image[i][SIZE - j - 1] = temp;
+            }
+        }
+    }
+    else if (choice == 2)
+    {
+        for (int i = 0; i < SIZE / 2; i++)
+        {
+            for (int j = 0; j < SIZE; j++)
+            {
+                int temp = image[i][j];
+                image[i][j] = image[SIZE - i - 1][j];
+                image[SIZE - i - 1][j] = temp;
+            }
+        }
+    }
+    else
+    {
+        cout << "Invalid choice. No flip performed." << endl;
+        return;
+    }
+    
+}
+void detectImage()
+{
+  // Create a new image to store the edges
+  unsigned char edges[SIZE][SIZE];
+  // Set the background pixels to white
+  memset(edges, 255, sizeof(edges));
+  
+  // Iterate over each pixel in the image
+  for (int i = 1; i < SIZE - 1; i++)
+  {
+    for (int j = 1; j < SIZE - 1; j++)
+    {
+      // Calculate the gradient magnitude using the Sobel operator
+      int gx = image[i - 1][j + 1] + 2 * image[i][j + 1] + image[i + 1][j + 1]
+             - image[i - 1][j - 1] - 2 * image[i][j - 1] - image[i + 1][j - 1];
+      int gy = image[i + 1][j - 1] + 2 * image[i + 1][j] + image[i + 1][j + 1]
+             - image[i - 1][j - 1] - 2 * image[i - 1][j] - image[i - 1][j + 1];
+      int gradient = sqrt(gx * gx + gy * gy);
+      
+      // Set the edge pixel in the edges image as black
+      if (gradient > 128) {
+         edges[i][j] = 0;
+      }
+    }
+  }
+  memcpy(image, edges, sizeof(image));
+  }
+  void cropImage() {
+  int x, y, l, w;
+
+  // Get cropping parameters from user
+  cout << "Enter x position: ";
+  cin >> x;
+  cout << "Enter y position: ";
+  cin >> y;
+  cout << "Enter length: ";
+  cin >> l;
+  cout << "Enter width: ";
+  cin >> w;
+
+  // Crop the image
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j < SIZE; j++) {
+      if (i < x || i >= (x + l) || j < y || j >= (y + w)) {
+        // Set pixels outside the cropped region to white (255)
+        image[i][j] = 255;
+      }
+    }
+  }
+
+}
